@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+
+    db:
+      container_name: DB_SHOE_STORE
+      image: postgres:alpine
+      volumes: 
+      - ./build:/scripts
+      - ./build/db_init.sql:/docker-entrypoint-initdb.d/init.sql
+      restart: always
+      environment:
+        POSTGRES_PASSWORD: go_pwd
+      ports: 
+        - 5432:5432
