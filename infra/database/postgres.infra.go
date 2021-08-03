@@ -6,14 +6,11 @@ import (
 	"store/core/accounts/entities"
 	"strconv"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func PostgresInitialize() (db *gorm.DB, err error) {
-
-	godotenv.Load(".env")
 
 	if db, err = gorm.Open(postgres.Open(os.Getenv("db_connection")), &gorm.Config{}); err != nil {
 		fmt.Println("Failed during connection database.")
