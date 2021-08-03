@@ -7,7 +7,7 @@ services:
       image: postgres:alpine
       volumes: 
       - ./build:/scripts
-      - ./build/db_init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./build/init.sql:/docker-entrypoint-initdb.d/init.sql
       restart: always
       environment:
         POSTGRES_PASSWORD: go_pwd
