@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"store/api/handlers"
+	"store/api/middlewares"
 
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
@@ -14,13 +15,6 @@ func Rise(db *gorm.DB) {
 	router := mux.NewRouter()
 	handlers.AccountsRouteConfigure(router, db)
 
-	router.Use(contentTypeMiddleware)
+	router.Use(middlewares.SetContentType)
 	http.ListenAndServe(os.Getenv("port"), router)
-}
-
-func contentTypeMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		next.ServeHTTP(w, r)
-	})
 }
