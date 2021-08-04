@@ -7,14 +7,12 @@ import (
 	"store/api/middlewares"
 
 	"github.com/gorilla/mux"
-	"gorm.io/gorm"
 )
 
-func Rise(db *gorm.DB) {
+func StartUp() {
 
 	router := mux.NewRouter()
-	handlers.AccountsRouteConfigure(router, db)
-
+	handlers.ConfigureHandlers(router)
 	router.Use(middlewares.SetContentType)
 	http.ListenAndServe(os.Getenv("port"), router)
 }

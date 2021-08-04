@@ -10,9 +10,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func Load() (db *gorm.DB, err error) {
+func Load() *gorm.DB {
 
-	if db, err = gorm.Open(postgres.Open(os.Getenv("db_connection")), &gorm.Config{}); err != nil {
+	db, err := gorm.Open(postgres.Open(os.Getenv("db_connection")), &gorm.Config{})
+
+	if err != nil {
 		fmt.Println("Failed during connection database.")
 		panic(err)
 	}
@@ -25,5 +27,5 @@ func Load() (db *gorm.DB, err error) {
 		fmt.Println("Migration executed has success.")
 	}
 
-	return db, nil
+	return db
 }

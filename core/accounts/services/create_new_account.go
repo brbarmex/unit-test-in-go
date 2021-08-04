@@ -2,10 +2,8 @@ package services
 
 import (
 	"store/core/accounts/entities"
-	"store/core/accounts/repositories"
 
 	uuid "github.com/satori/go.uuid"
-	"gorm.io/gorm"
 )
 
 type AccountInput struct {
@@ -22,7 +20,7 @@ type Notification struct {
 	messages []string
 }
 
-func CreateNewAccount(input AccountInput, db *gorm.DB, sendEmail func(msg string, to string)) (AccountOutput, Notification) {
+func CreateNewAccount(input AccountInput, saveRegister func(entity *entities.Account), sendEmail func(msg string, to string)) (AccountOutput, Notification) {
 
 	account := entities.Account{
 		HashCode: uuid.NewV4().String(),
@@ -32,7 +30,7 @@ func CreateNewAccount(input AccountInput, db *gorm.DB, sendEmail func(msg string
 		Actived:  true,
 	}
 
-	repositories.Insert(&account, db)
+	saveRegister(&account)
 
 	go sendEmail("", input.Email)
 
