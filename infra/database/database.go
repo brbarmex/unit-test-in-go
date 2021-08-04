@@ -1,4 +1,4 @@
-package infra
+package databases
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func PostgresInitialize() (db *gorm.DB, err error) {
+func Load() (db *gorm.DB, err error) {
 
 	if db, err = gorm.Open(postgres.Open(os.Getenv("db_connection")), &gorm.Config{}); err != nil {
 		fmt.Println("Failed during connection database.")
