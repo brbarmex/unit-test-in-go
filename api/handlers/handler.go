@@ -22,6 +22,6 @@ func loadDependency() {
 }
 
 func loadRoutes(r *mux.Router) {
-	r.HandleFunc("/accounts", accountsController.PostAccount()).Methods("POST")
-	r.HandleFunc("/accounts", accountsController.GetAll()).Methods("GET")
+	r.HandleFunc("/accounts", accountsController.Post()).Methods("POST")
+	r.HandleFunc("/accounts", accountsController.Get()).Methods("GET")
 }

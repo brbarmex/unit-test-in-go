@@ -10,7 +10,6 @@ import (
 )
 
 func StartUp() {
-
 	router := mux.NewRouter()
 	handlers.ConfigureHandlers(router)
 	router.Use(middlewares.SetContentType)

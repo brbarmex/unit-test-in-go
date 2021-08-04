@@ -12,7 +12,7 @@ type AccountController struct {
 	Repository repositories.AccountRepository
 }
 
-func (ctrl AccountController) PostAccount() http.HandlerFunc {
+func (ctrl AccountController) Post() http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 
 		var input services.AccountInput
@@ -27,7 +27,7 @@ func (ctrl AccountController) PostAccount() http.HandlerFunc {
 	}
 }
 
-func (ctrl AccountController) GetAll() http.HandlerFunc {
+func (ctrl AccountController) Get() http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(rw).Encode(ctrl.Repository.SelectAllWithoutPagination())
 	}
