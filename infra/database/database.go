@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Load() *gorm.DB {
+func Connect() *gorm.DB {
 
 	db, err := gorm.Open(postgres.Open(os.Getenv("db_connection")), &gorm.Config{})
 
@@ -20,7 +20,7 @@ func Load() *gorm.DB {
 	}
 
 	if enableMigrations, err := strconv.ParseBool(os.Getenv("enable_migrations")); err == nil && enableMigrations {
-		if err := db.AutoMigrate(&entities.Account{}); err != nil {
+		if err := db.AutoMigrate(&entities.Credential{}); err != nil {
 			fmt.Println("Failed during migration executation.")
 			panic(err)
 		}
@@ -28,4 +28,9 @@ func Load() *gorm.DB {
 	}
 
 	return db
+}
+
+func Disconect(db *gorm.DB) {
+	sql, _ := db.DB()
+	sql.Close()
 }

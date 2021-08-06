@@ -2,9 +2,7 @@ package handlers
 
 import (
 	"store/api/controllers"
-	"store/core/accounts/repositories"
-	databases "store/infra/database"
-	"store/pkg/notifications/email"
+	"store/infra/database/repositories"
 
 	"github.com/gorilla/mux"
 )
@@ -17,8 +15,7 @@ func ConfigureHandlers(router *mux.Router) {
 }
 
 func loadDependency() {
-	db := databases.Load()
-	accountsController = controllers.AccountController{SendMail: email.SendMail, Repository: repositories.AccountRepository{Database: db}}
+	accountsController = controllers.AccountController{Repository: repositories.AccountRepository{}}
 }
 
 func loadRoutes(r *mux.Router) {
