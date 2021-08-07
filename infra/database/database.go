@@ -15,7 +15,7 @@ func Load() {
 	defer Disconect(db)
 
 	if enableMigrations, err := strconv.ParseBool(os.Getenv("enable_migrations")); err == nil && enableMigrations {
-		if err := db.AutoMigrate(&entities.Credential{}); err != nil {
+		if err := db.AutoMigrate(&entities.Credential{}, &entities.Account{}); err != nil {
 			fmt.Println("Failed during migration executation.")
 			panic(err)
 		}
