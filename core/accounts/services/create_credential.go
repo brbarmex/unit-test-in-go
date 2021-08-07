@@ -17,7 +17,7 @@ type Credential struct {
 	Password string `json:"password" validate:"len=8"`
 }
 
-func CreateCredential(credentialInput *Credential, repository interfaces.Repository) (violations []string) {
+func CreateCredential(credentialInput *Credential, repository interfaces.Repository) (violations []string, er error) {
 
 	if err := validator.Validate(credentialInput); err != nil {
 		violations = append(violations, err.Error())
@@ -32,12 +32,12 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 	}
 
 	if len(violations) > 0 {
-		return violations
+		return violations, nil
 	}
 
 	credentialInput.Id = uuid.NewV4().String()
 
-	repository.Create(&entities.Credential{
+	if err := repository.Create(&entities.Credential{
 		ID:        0,
 		HashCode:  credentialInput.Id,
 		Email:     credentialInput.Email,
@@ -45,7 +45,9 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 		Actived:   true,
 		CreatedAt: time.Time{},
 		UpdatedAt: time.Time{},
-	})
+	}); err != nil {
+		return nil, err
+	}
 
-	return nil
+	return nil, nil
 }

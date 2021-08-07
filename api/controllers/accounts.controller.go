@@ -21,12 +21,21 @@ func (ctrl AccountController) Post() http.HandlerFunc {
 			return
 		}
 
-		if errors := services.CreateCredential(&credentialInput, ctrl.Repository); len(errors) > 0 {
+		violations, err := services.CreateCredential(&credentialInput, ctrl.Repository)
+
+		if len(violations) > 0 {
 			rw.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(rw).Encode(errors)
+			json.NewEncoder(rw).Encode(violations)
 			return
 		}
 
+		if err != nil {
+			rw.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(rw).Encode("an internal error ocurred when save the credential")
+			return
+		}
+
+		rw.WriteHeader(http.StatusCreated)
 		json.NewEncoder(rw).Encode(credentialInput)
 	}
 }
