@@ -4,6 +4,7 @@ import (
 	"net/mail"
 	"store/core/accounts/entities"
 	"store/core/accounts/interfaces"
+	"store/pkg/security"
 	"time"
 
 	uuid "github.com/satori/go.uuid"
@@ -13,7 +14,7 @@ import (
 type Credential struct {
 	Id       string `json:"id"`
 	Email    string `json:"email" validate:"nonzero"`
-	Password string `json:"password" validate:"min=8"`
+	Password string `json:"password" validate:"len=8"`
 }
 
 func CreateCredential(credentialInput *Credential, repository interfaces.Repository) (violations []string) {
@@ -38,7 +39,7 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 		ID:        0,
 		HashCode:  uuid.NewV4().String(),
 		Email:     credentialInput.Email,
-		Password:  credentialInput.Password,
+		Password:  security.Encrypt(credentialInput.Password),
 		Actived:   true,
 		CreatedAt: time.Time{},
 		UpdatedAt: time.Time{},
@@ -46,6 +47,5 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 
 	repository.Create(&credentialModel)
 	credentialInput.Id = credentialModel.HashCode
-
-	return violations
+	return nil
 }
