@@ -10,14 +10,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func Connect() *gorm.DB {
-
-	db, err := gorm.Open(postgres.Open(os.Getenv("db_connection")), &gorm.Config{})
-
-	if err != nil {
-		fmt.Println("Failed during connection database.")
-		panic(err)
-	}
+func Load() {
+	db := Connect()
+	defer Disconect(db)
 
 	if enableMigrations, err := strconv.ParseBool(os.Getenv("enable_migrations")); err == nil && enableMigrations {
 		if err := db.AutoMigrate(&entities.Credential{}); err != nil {
@@ -25,6 +20,16 @@ func Connect() *gorm.DB {
 			panic(err)
 		}
 		fmt.Println("Migration executed has success.")
+	}
+}
+
+func Connect() *gorm.DB {
+
+	db, err := gorm.Open(postgres.Open(os.Getenv("db_connection")), &gorm.Config{})
+
+	if err != nil {
+		fmt.Println("Failed during connection database.")
+		panic(err)
 	}
 
 	return db

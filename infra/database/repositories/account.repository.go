@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"store/core/accounts/entities"
 	databases "store/infra/database"
 )
@@ -18,7 +19,11 @@ func (ar AccountRepository) Select(query string) (accounts []entities.Credential
 func (ar AccountRepository) Create(entitie *entities.Credential) {
 	db := databases.Connect()
 	defer databases.Disconect(db)
-	db.Create(&entitie)
+	result := db.Create(&entitie)
+	if result.Error != nil {
+		fmt.Println("Deu ruim pai")
+		//panic(result.Error)
+	}
 }
 
 func (ar AccountRepository) TakeCredentialByEmail(email string) entities.Credential {

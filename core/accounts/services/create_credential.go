@@ -27,25 +27,25 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 		violations = append(violations, err.Error())
 	}
 
-	if entity := repository.TakeCredentialByEmail(credentialInput.Email); entity.ID > 0 {
-		violations = append(violations, "email: Already exist")
-	}
+	// if entity := repository.TakeCredentialByEmail(credentialInput.Email); entity.ID > 0 {
+	// 	violations = append(violations, "email: Already exist")
+	// }
 
 	if len(violations) > 0 {
 		return violations
 	}
 
-	credentialModel := entities.Credential{
+	credentialInput.Id = uuid.NewV4().String()
+
+	repository.Create(&entities.Credential{
 		ID:        0,
-		HashCode:  uuid.NewV4().String(),
+		HashCode:  credentialInput.Id,
 		Email:     credentialInput.Email,
 		Password:  security.Encrypt(credentialInput.Password),
 		Actived:   true,
 		CreatedAt: time.Time{},
 		UpdatedAt: time.Time{},
-	}
+	})
 
-	repository.Create(&credentialModel)
-	credentialInput.Id = credentialModel.HashCode
 	return nil
 }
