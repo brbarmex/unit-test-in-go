@@ -17,14 +17,14 @@ type Credential struct {
 	Password string `json:"password" validate:"len=8"`
 }
 
-func CreateCredential(credentialInput *Credential, repository interfaces.Repository) (violations []string, er error) {
+func CreateCredential(credentialInput *Credential, repository interfaces.Repository) (violations []string, err error) {
 
-	if err := validator.Validate(credentialInput); err != nil {
-		violations = append(violations, err.Error())
+	if error := validator.Validate(credentialInput); error != nil {
+		violations = append(violations, error.Error())
 	}
 
-	if _, err := mail.ParseAddress(credentialInput.Email); err != nil {
-		violations = append(violations, err.Error())
+	if _, error := mail.ParseAddress(credentialInput.Email); error != nil {
+		violations = append(violations, error.Error())
 	}
 
 	if entity := repository.TakeCredentialByEmail(credentialInput.Email); entity.ID > 0 {
@@ -37,7 +37,7 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 
 	credentialInput.Id = uuid.NewV4().String()
 
-	if err := repository.Create(&entities.Credential{
+	if error := repository.Create(&entities.Credential{
 		ID:        0,
 		HashCode:  credentialInput.Id,
 		Email:     credentialInput.Email,
@@ -45,8 +45,8 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 		Actived:   true,
 		CreatedAt: time.Time{},
 		UpdatedAt: time.Time{},
-	}); err != nil {
-		return nil, err
+	}); error != nil {
+		return nil, error
 	}
 
 	return nil, nil
