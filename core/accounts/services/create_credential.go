@@ -27,9 +27,9 @@ func CreateCredential(credentialInput *Credential, repository interfaces.Reposit
 		violations = append(violations, err.Error())
 	}
 
-	// if entity := repository.TakeCredentialByEmail(credentialInput.Email); entity.ID > 0 {
-	// 	violations = append(violations, "email: Already exist")
-	// }
+	if entity := repository.TakeCredentialByEmail(credentialInput.Email); entity.ID > 0 {
+		violations = append(violations, "email: Already exist")
+	}
 
 	if len(violations) > 0 {
 		return violations
