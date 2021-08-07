@@ -7,18 +7,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var accountsController controllers.AccountController
+var (
+	accountsController = controllers.AccountController{Repository: repositories.AccountRepository{}}
+)
 
 func ConfigureHandlers(router *mux.Router) {
-	loadDependency()
-	loadRoutes(router)
-}
-
-func loadDependency() {
-	accountsController = controllers.AccountController{Repository: repositories.AccountRepository{}}
-}
-
-func loadRoutes(r *mux.Router) {
-	r.HandleFunc("/accounts/credentials", accountsController.Post).Methods("POST")
-	r.HandleFunc("/accounts", accountsController.Get()).Methods("GET")
+	router.HandleFunc("/accounts/credentials", accountsController.Post).Methods("POST")
+	router.HandleFunc("/accounts", accountsController.Get()).Methods("GET")
 }
