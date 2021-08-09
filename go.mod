@@ -3,6 +3,7 @@ module store
 go 1.16
 
 require (
+	github.com/go-playground/validator/v10 v10.9.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
