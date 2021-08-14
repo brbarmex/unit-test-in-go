@@ -1,13 +1,10 @@
-module store
+module github.com/BrunoBMelo/shoestore
 
 go 1.16
 
 require (
+	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
-	github.com/gorilla/mux v1.8.0 // indirect
-	github.com/joho/godotenv v1.3.0 // indirect
-	github.com/satori/go.uuid v1.2.0 // indirect
-	gopkg.in/validator.v2 v2.0.0-20210331031555-b37d688a7fb0 // indirect
-	gorm.io/driver/postgres v1.1.0
-	gorm.io/gorm v1.21.12 // indirect
+	github.com/stretchr/testify v1.7.0
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
